@@ -1,9 +1,9 @@
-1.
-2.
-3.
-4.
-5.
-6.
-7.
-8.
-9.
+1. You could use 'r' command with arguments in GDB session. For example, `r arg1 arg2 arg3`
+2. break, brea, bre, br, b -- Ser breakpoint at specified location.
+3. nexti, ni (proceded subroutine)
+4. next, n (proceding subroutine)
+5. continue, c
+6. print, inspect, p -- Print value of expression EXP.
+7. display expr
+8. info locals
+9. quit, q
