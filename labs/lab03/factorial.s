@@ -20,5 +20,14 @@ main:
     addi a0, x0, 10
     ecall # Exit
 
-factorial:
-    # YOUR CODE HERE
+factorial:  # Assume n > 0
+    addi t0, zero, 1  # condition check
+    mv t1, a0  # iterative variable
+    addi a0, zero, 1  # result
+loop:
+    bne t1, t0, multiply
+    ret  # result = 1
+multiply:
+    mul a0, a0, t1
+    addi t1, t1, -1
+    j loop

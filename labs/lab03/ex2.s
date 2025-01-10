@@ -38,11 +38,11 @@ main:
     sw ra, 16(sp)
     # END PROLOGUE
     addi t0, x0, 0
-    addi s0, x0, 0
-    la s1, source
-    la s2, dest
+    addi s0, x0, 0  # sum
+    la s1, source  # source pointer
+    la s2, dest  # dest pointer
 loop:
-    slli s3, t0, 2
+    slli s3, t0, 2  # k
     add t1, s1, s3
     lw t2, 0(t1)
     beq t2, x0, exit

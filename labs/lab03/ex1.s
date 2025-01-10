@@ -1,14 +1,14 @@
-.data
-.word 2, 4, 6, 8
-n: .word 9
+.data  # declare a section of memory where data variables are stored.
+.word 2, 4, 6, 8 # declares an array of words with values 2, 4, 6, and 8 
+n: .word 9  # declares a word variable 'n' with the value 9
 
-.text
+.text  # declare a section of memeory where code is stored.
 main:
     add t0, x0, x0
     addi t1, x0, 1
-    la t3, n
+    la t3, n  # address of n: 0x10000010
     lw t3, 0(t3)
-fib:
+fib:  # calculate fib(n), which is fibonacci number. result = 34
     beq t3, x0, finish
     add t2, t1, t0
     mv t0, t1
