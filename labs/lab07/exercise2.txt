@@ -1,8 +1,8 @@
-1.
-2.
+1. jki, kji
+2. ikj, kij
 
 --- lines below are ignored by the AG ---
 
-Checkoff Question 1:
-Checkoff Question 2:
-Checkoff Question 3:
+Checkoff Question 1: In the form of innermost loop (C[i+j*n] += A[i+k*n] * B[k+j*n]), making i in the innermost loop will utilize cache well, spatial locality for C and A, temporal locality for B.
+Checkoff Question 2: Following the CQ1, making j interate the innermost loop, spatial locality will be detrimental even worse when n > Block Size of cache.
+Checkoff Question 3: The order of outer loop will slightly affect the performance when hit rate is high, making large stride outer will be better. But in low hit rate, then the order is not the main source of performance bottleneck.
