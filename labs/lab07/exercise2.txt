@@ -3,6 +3,6 @@
 
 --- lines below are ignored by the AG ---
 
-Checkoff Question 1: In the form of innermost loop (C[i+j*n] += A[i+k*n] * B[k+j*n]), making i in the innermost loop will utilize cache well, spatial locality for C and A, temporal locality for B.
-Checkoff Question 2: Following the CQ1, making j interate the innermost loop, spatial locality will be detrimental even worse when n > Block Size of cache.
-Checkoff Question 3: The order of outer loop will slightly affect the performance when hit rate is high, making large stride outer will be better. But in low hit rate, then the order is not the main source of performance bottleneck.
+Checkoff Question 1: When using i as the innermost loop in the computation C[i+j*n] += A[i+k*n] * B[k+j*n], it optimizes cache utilization. Spatial locality is achieved for C and A, while temporal locality benefits B
+Checkoff Question 2: Contrary to CQ1, j is used in the innermost loop, it severely degrades spatial locality, accesses to C and B become non-contiguous and performance will get worse when n exceeds the cache block size.
+Checkoff Question 3: The order of outer loop will slightly affect the performance when hit rate is high, large-stride dimensions in outer loops may improve prefetching efficiency. But in low hit rate, memory bandwidth becomes the bottleneck, making loop order irrelevant.

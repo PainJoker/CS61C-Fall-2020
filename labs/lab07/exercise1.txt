@@ -17,9 +17,9 @@ Scenario 3
 
 --- lines below are ignored by the AG ---
 
-Checkoff Question 1: Rep Count denote the count of sequentially write(option 0), so no memeory wiil be hit in scenario 1.
-Checkoff Question 2: Step Size modification utilizes the spatial locality while option modification utilizes the temporal locality.
-Checkoff Question 3: One compulsory miss is included in each block, and RW mode gives one hit. For 2 Step Size, will give 2 more hit thanks to spatial locality.
-Checkoff Question 4: Cache Size is equal to Array Size, so after one iteration through the cache will get the all data need to be accessed.
-Checkoff Question 5: Because each element in the array is independently processed, it is possible to iterative all function to one element then move on, i.e., switch the inner loop and outer loop.
-Checkoff Question 6: When after one Rep Count iteration, L2 will get full copy of array, so Rep Count > 1 could make L2 hit rate increase and L1 hit rate stay the same.
+Checkoff Question 1: Rep Count denote the count of sequentially write(option 0). No memory hits will occur in scenario 1.
+Checkoff Question 2: Step Size modification leverages spatial locality while option modification leverages the temporal locality.
+Checkoff Question 3: Each block incurs 1 compulsory miss and RW mode leads to one hit. With Step Size = 2, spatial locality provides 2 additional hits.
+Checkoff Question 4: Cache Size equals Array Size, so after one full iteration, all reaquired data is cached.
+Checkoff Question 5: Because each element in the array is independently processed, it is possible to iterate all function for one element first(i.e., swap inner and outer loops).
+Checkoff Question 6: After one Rep Count iteration, L2 holds full copy of array. For Rep Count > 1, L2 hit rate increases due to reuse, while L1 hit rate remains unchanged.

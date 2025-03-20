@@ -1,20 +1,23 @@
 --- not autograded ---
 
 Part 1
-    blocksize = 20, n = 100: 
-    blocksize = 20, n = 1000: 
-    blocksize = 20, n = 2000: 
-    blocksize = 20, n = 5000: 
-    blocksize = 20, n = 10000: 
+    blocksize = 20, n = 100: 0.004, 0.007 
+    blocksize = 20, n = 1000: 2.29, 1.216
+    blocksize = 20, n = 2000: 21.864, 5.382
+    blocksize = 20, n = 5000: 187.117, 31.335
+    blocksize = 20, n = 10000: 832.551, 176.408
 
-    Checkoff Question 1:
-    Checkoff Question 2:
+    Checkoff Question 1: In blocksize = 20, n = 1000 scenario, cache blocked version of transpose becomes faster.
+    Checkoff Question 2: Cache blocking requires the matrix to exceed the cache capacity to outperform the naive code.
+            For small n, the entire matrix fits in the cache, so the naive transpose already has perfect locality. 
+            Meanwhile, the blocked version’s extra loops (block iterations + intra-block loops) add overhead without providing cache benefits, 
+            making it slower.
 
 Part 2
-    blocksize = 50, n = 10000:
-    blocksize = 100, n = 10000:
-    blocksize = 500, n = 10000:
-    blocksize = 1000, n = 10000:
-    blocksize = 5000, n = 10000:
+    blocksize = 50, n = 10000: 876.844, 147.304
+    blocksize = 100, n = 10000: 854.932, 141.438
+    blocksize = 500, n = 10000: 839.176, 161.571 
+    blocksize = 1000, n = 10000: 836.476, 193.443
+    blocksize = 5000, n = 10000: 923.595, 820.14
 
-    Checkoff Question 3:
+    Checkoff Question 3: When blocksize increases, the spatial locality is broke so the performance is close to naive approach.
