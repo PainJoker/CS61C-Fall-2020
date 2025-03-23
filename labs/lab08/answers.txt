@@ -1,19 +1,19 @@
 Exercise 1:
-    1.
-    2.
-    3.
+    1. 32
+    2. 2, 8, 0, 8
+    3. no, no
 
 Exercise 2:
-    1.
+    1. 00, 20, 40, 60, 80, A0, C0, E0, 01, 21
 
 Exercise 3:
-    1.
+    1. Physical Memory Size
 
 --- lines below are ignored by the AG ---
 
 Exercise 1 Checkoff Questions:
-    1.
-    2.
+    1. The virtual address is split into its virtual page number (VPN) and offset, leading to a TLB miss as the VPN is absent in the TLB; this proceeds to a page table lookup, where the invalid page table entry inevitably triggers a page fault, forcing the OS to load the page from disk into memory, generate the physical address (PA) using the new mapping, and update both the page table and TLB with the valid entry.
+    2. Physical memory only support 4 frames thus only 2 bits valid for PPN, while virtual memory support 8 pages so 3 bit valid for VPN.
 
 Exercise 4 Checkoff Question:
     1.
