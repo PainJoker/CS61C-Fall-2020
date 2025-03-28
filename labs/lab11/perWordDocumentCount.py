@@ -1,7 +1,9 @@
+import dis
 import sys
 import re
 
-from pyspark import SparkContext,SparkConf
+from pyspark import SparkContext, SparkConf
+
 
 def flatMapFunc(document):
     """
@@ -19,14 +21,16 @@ def flatMapFunc(document):
     """
     documentID = document[0]
     words = re.findall(r"\w+", document[1])
-    return words
+    return [(word, documentID) for word in words]
+
 
 def mapFunc(arg):
     """
     Create `(key, value)` pairs.
     You may need to modify this code.
     """
-    return (arg, 1)
+    return (arg[0], 1)
+
 
 def reduceFunc(arg1, arg2):
     """
@@ -35,8 +39,13 @@ def reduceFunc(arg1, arg2):
     """
     return arg1 + arg2
 
+
 def perWordDocumentCount(file_name, output="spark-wc-out-perWordDocumentCount"):
-    sc = SparkContext("local[8]", "PerWordDocumentCount", conf=SparkConf().set("spark.hadoop.validateOutputSpecs", "false"))
+    sc = SparkContext(
+        "local[8]",
+        "PerWordDocumentCount",
+        conf=SparkConf().set("spark.hadoop.validateOutputSpecs", "false"),
+    )
     file = sc.sequenceFile(file_name)
 
     """
@@ -44,11 +53,16 @@ def perWordDocumentCount(file_name, output="spark-wc-out-perWordDocumentCount"):
     The function `distinct()` may be helpful...
     Be sure that your output ends up in alphabetial order.
     """
-    counts = file.flatMap(flatMapFunc) \
-                 .map(mapFunc) \
-                 .reduceByKey(reduceFunc)
+    counts = (
+        file.flatMap(flatMapFunc)
+        .distinct()
+        .map(mapFunc)
+        .reduceByKey(reduceFunc)
+        .sortByKey()
+    )
 
     counts.coalesce(1).saveAsTextFile(output)
+
 
 """ Do not worry about this """
 if __name__ == "__main__":
