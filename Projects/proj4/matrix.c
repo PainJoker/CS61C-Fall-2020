@@ -106,21 +106,21 @@ int allocate_matrix_ref(matrix **mat, matrix *from, int row_offset, int col_offs
     }
 
     if(row_offset < 0 || col_offset < 0 || rows <= 0 || cols <= 0) {
-        return -1;  // invalid args for offsets
+        return -2;  // invalid args for offsets
     }
     
     if(row_offset + rows > from->rows || col_offset + cols > from->cols) {
-        return -1;  // invalid args for combation
+        return -2;  // invalid args for combation
     }
 
     matrix *temp = (matrix *)malloc(sizeof(matrix));
     if(!temp) {
-        return -2;  // memeory allocation failed
+        return -3;  // memeory allocation failed
     }
     temp->data = (double **)malloc(rows * sizeof(double *));
     if(!temp->data) {
         free(temp);
-        return -2;
+        return -3;
     }
     for(int i = 0; i < rows; i++) {
         temp->data[i] = from->data[row_offset + i] + col_offset;

@@ -461,9 +461,9 @@ PyNumberMethods Matrix61c_as_number = {
     .nb_add = (binaryfunc)Matrix61c_add,
     .nb_subtract = (binaryfunc)Matrix61c_sub,
     .nb_multiply = (binaryfunc)Matrix61c_multiply,
-    .nb_absolute = (binaryfunc)Matrix61c_abs,
-    .nb_negative = (binaryfunc)Matrix61c_neg,
-    .nb_power = (binaryfunc)Matrix61c_pow,
+    .nb_absolute = (unaryfunc)Matrix61c_abs,
+    .nb_negative = (unaryfunc)Matrix61c_neg,
+    .nb_power = (ternaryfunc)Matrix61c_pow,
 };
 
 
@@ -513,7 +513,29 @@ PyObject *Matrix61c_set_value(Matrix61c *self, PyObject* args) {
  * float/int.
  */
 PyObject *Matrix61c_get_value(Matrix61c *self, PyObject* args) {
-    /* TODO: YOUR CODE HERE */
+    PyObject *row_obj = NULL;
+    PyObject *col_obj = NULL;
+
+    if(!PyArg_UnpackTuple(args, "args", 2, 2, &row_obj, &col_obj)) {
+        PyErr_SetString(PyExc_TypeError, "set() require exactly 2 arguments (row, col).");
+        return NULL;
+    }
+
+    if(!PyLong_Check(row_obj) || !PyLong_Check(col_obj)) {
+        PyErr_SetString(PyExc_TypeError, "row and col indices must of type integer.");
+        return NULL;
+    }
+
+    int row = (int)PyLong_AsLong(row_obj);
+    int col = (int)PyLong_AsLong(col_obj);
+    
+    if(row < 0 || row >= self->mat->rows || col < 0 || col >= self->mat->cols) {
+        PyErr_SetString(PyExc_IndexError, "Matrix indices out of range.");
+        return NULL;
+    }
+    
+    double val = get(self->mat, row, col);
+    return PyFloat_FromDouble(val);
 }
 
 /*
@@ -523,17 +545,68 @@ PyObject *Matrix61c_get_value(Matrix61c *self, PyObject* args) {
  * You might find this link helpful: https://docs.python.org/3.6/c-api/structures.html
  */
 PyMethodDef Matrix61c_methods[] = {
-    {"set", (PyCFunction)Matrix61c_set_value, METH_VARARGS, "Set self's entry at the ith row and jth column to val"}, 
+    {"set", (PyCFunction)Matrix61c_set_value, METH_VARARGS, 
+        "Set self's entry at the ith row and jth column to val"
+    }, 
+    {"get", (PyCFunction)Matrix61c_get_value, METH_VARARGS, 
+        "Get value at ith row and jth column."
+    }, 
     {NULL, NULL, 0, NULL}
 };
 
 /* INDEXING */
+/**
+ * Helper function for 1D/2D matrix subscript.
+ */
+PyObject *Matrix61c_1d_int_subscript(matrix* mat, long idx) {
+    return NULL;
+}
+
+PyObject *Matrix61c_1d_slice_subscript(matrix* mat, Py_ssize_t start, Py_ssize_t stop, Py_ssize_t step, Py_ssize_t slicelength) {
+    return NULL;
+}
+
+PyObject *Matrix61c_1d_subscript(matrix* mat, PyObject* key) {
+    if(!PyLong_Check(key) && !PySlice_Check(key)) {
+        PyErr_SetString(PyExc_TypeError, "Index key of 1D mat must of type integer or slice.");
+        return NULL;
+    }
+
+    PyObject *rv = NULL;
+    if(PyLong_Check(key)) {
+        long idx = PyLong_AS_LONG(key);
+        rv = Matrix61c_1d_int_subscript(mat, idx);
+    } else {
+        Py_ssize_t start, stop, step, slicelength;
+        Py_ssize_t length = mat->rows * mat->cols;
+        int fail_slice = PySlice_GetIndicesEx(key, length, &start, &stop, &step, &slicelength);
+        if(fail_slice) {
+            PyErr_SetString(PyExc_RuntimeError, "slice unpack failed.");
+            return NULL;
+        }
+        rv = Matrix61c_1d_slice_subscript(mat, start, stop, step, slicelength);
+    }
+
+    return rv;
+}
+
+PyObject *Matrix61c_2d_subscript(matrix* mat, PyObject* key) {
+    return NULL;
+}
 
 /*
  * Given a numc.Matrix `self`, index into it with `key`. Return the indexed result.
  */
 PyObject *Matrix61c_subscript(Matrix61c* self, PyObject* key) {
-    /* TODO: YOUR CODE HERE */
+    matrix *mat = self->mat;
+    PyObject *rv = NULL;
+    if(mat->is_1d) {
+        rv = Matrix61c_1d_subscript(mat, key);
+    } else {
+        rv = Matrix61c_2d_subscript(mat, key);
+    }
+
+    return rv;
 }
 
 /*

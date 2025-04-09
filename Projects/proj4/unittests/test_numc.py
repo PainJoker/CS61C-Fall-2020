@@ -10,6 +10,12 @@ class TestInit(TestCase):
         expected = [[0, 0], [0, 0]]
         assert np.allclose(np.array(mat_list), np.array(expected))
 
+    def test_1D_matrix_creation(self):
+        mat = nc.Matrix(1, 3)
+        mat_list = nc.to_list(mat)
+        expected = [0, 0, 0]
+        assert np.allclose(np.array(mat_list), np.array(expected))
+
     def test_simple_matrix_creation(self):
         mat = nc.Matrix(2, 2, 1)
         mat_list = nc.to_list(mat)
@@ -139,3 +145,26 @@ class TestInstanceMethod(TestCase):
             mat.set(2, 2, 0)
             mat.set(1, 2, 0)
             mat.set(2, 1, 0)
+
+    def test_get_wrong_args(self):
+        mat = nc.Matrix(2, 2, 1)
+        with self.assertRaises(TypeError):
+            mat.get(5)
+            mat.get(1.0, 2.3, 1)
+            mat.get(nc.Matrix(1, 1, 2))
+        with self.assertRaises(IndexError):
+            mat.get(0, 3)
+            mat.get(3, 3)
+            mat.get(3, 0)
+
+    def test_small_set_get(self):
+        mat = nc.Matrix([[6, 7], [3, 4]])
+
+        mat.set(0, 0, 1)
+        assert 1 == mat.get(0, 0)
+        mat.set(0, 1, 1)
+        assert 1 == mat.get(0, 1)
+        mat.set(1, 0, 1)
+        assert 1 == mat.get(1, 0)
+        mat.set(1, 1, 1)
+        assert 1 == mat.get(1, 1)
